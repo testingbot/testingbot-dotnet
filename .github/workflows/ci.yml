@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build & test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Verify formatting
+        run: dotnet format --verify-no-changes --severity warn
+
+      - name: Build
+        run: dotnet build -c Release --no-restore
+
+      - name: Test (with coverage)
+        run: dotnet test -c Release --no-build --collect:"XPlat Code Coverage" --results-directory ./coverage --logger "trx;LogFileName=test-results.trx"
+
+      - name: Check for vulnerable packages
+        run: |
+          dotnet list package --vulnerable --include-transitive 2>&1 | tee vulnerable.txt
+          if grep -q -E "has the following vulnerable|>= .* Critical|>= .* High" vulnerable.txt; then
+            echo "::error::Vulnerable packages detected."
+            exit 1
+          fi
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: ./coverage

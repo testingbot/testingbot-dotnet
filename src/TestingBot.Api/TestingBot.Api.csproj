@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <PackageId>TestingBot.Api</PackageId>
+    <Title>TestingBot REST API SDK</Title>
+    <Description>Official .NET SDK for the TestingBot REST API: manage tests, builds, app storage, tunnels, devices, screenshots, Codeless tests, and team accounts. Async, thread-safe, zero third-party dependencies. For dependency-injection wiring see TestingBot.Api.DependencyInjection.</Description>
+    <RootNamespace>TestingBot.Api</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="..\..\icon.png" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="TestingBot.Api.DependencyInjection" />
+    <InternalsVisibleTo Include="TestingBot.Api.Tests" />
+    <InternalsVisibleTo Include="TestingBot.Api.IntegrationTests" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,12 @@
+[*.cs]
+# Test method names use underscores by convention (Method_State_Expectation).
+dotnet_diagnostic.CA1707.severity = none
+# Tests don't need ConfigureAwait(false).
+dotnet_diagnostic.CA2007.severity = none
+# Allow broad assertions / catches / literals in tests.
+dotnet_diagnostic.CA1031.severity = none
+dotnet_diagnostic.CA1062.severity = none
+dotnet_diagnostic.CA2234.severity = none
+dotnet_diagnostic.CA1861.severity = none
+# XML docs not required in test projects.
+dotnet_diagnostic.CS1591.severity = none

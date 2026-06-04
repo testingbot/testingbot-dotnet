@@ -1,0 +1,6 @@
+[*.cs]
+# Sample code prioritises readability over library-grade rules.
+dotnet_diagnostic.CA2007.severity = none
+dotnet_diagnostic.CA1303.severity = none
+dotnet_diagnostic.CA1031.severity = none
+dotnet_diagnostic.CS1591.severity = none

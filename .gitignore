@@ -1,0 +1,39 @@
+## .NET build output
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+artifacts/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Rider / VS / VS Code
+.idea/
+.vs/
+.vscode/
+*.DotSettings.user
+
+## Test / coverage
+[Tt]est[Rr]esult*/
+coverage/
+*.coverage
+*.coveragexml
+coverage.cobertura.xml
+coverage.opencover.xml
+TestResults/
+
+## NuGet
+*.nupkg
+*.snupkg
+.nuget/
+project.lock.json
+
+## Misc
+*.log
+.DS_Store

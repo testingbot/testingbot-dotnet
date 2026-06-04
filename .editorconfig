@@ -1,0 +1,45 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.{json,yml,yaml,csproj,props,targets,config}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.cs]
+# --- C# language & style conventions (enforced by `dotnet format` in CI) ---
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_using_directive_placement = outside_namespace:warning
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+csharp_prefer_braces = true:silent
+csharp_style_var_for_built_in_types = false:silent
+csharp_style_var_when_type_is_apparent = true:silent
+dotnet_style_qualification_for_field = false:silent
+dotnet_style_qualification_for_property = false:silent
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:warning
+csharp_style_expression_bodied_methods = when_on_single_line:silent
+
+# --- Analyzer severities ---
+# Style (IDExxxx) is not enforced in `dotnet build` (EnforceCodeStyleInBuild is off);
+# it is enforced separately via `dotnet format --verify-no-changes` in CI.
+
+# MD5 is used ONLY for the non-security session-sharing hash (API parity); not a security boundary.
+dotnet_diagnostic.CA5351.severity = none
+# Exception/log message string literals are not localized in this SDK.
+dotnet_diagnostic.CA1303.severity = none
+# URL fields mirror the API and are exchanged as strings, not System.Uri.
+dotnet_diagnostic.CA1054.severity = none
+dotnet_diagnostic.CA1056.severity = none
+# Broad catches are intentional in the HTTP/error-parsing layer (rethrown as typed exceptions).
+dotnet_diagnostic.CA1031.severity = none
+# Public argument-null validation is applied explicitly where it matters.
+dotnet_diagnostic.CA1062.severity = none

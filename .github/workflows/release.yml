@@ -1,0 +1,57 @@
+name: Release
+
+# Publishes both packages (and symbol packages) to NuGet when a GitHub Release is published.
+# Tag the release as v1.2.3; the version is derived from the tag.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Pack & publish
+    runs-on: ubuntu-latest
+    environment: nuget
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+
+      - name: Derive version from tag
+        id: version
+        run: echo "value=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Verify formatting
+        run: dotnet format --verify-no-changes --severity warn
+
+      - name: Build
+        run: dotnet build -c Release --no-restore -p:Version=${{ steps.version.outputs.value }} -p:ContinuousIntegrationBuild=true
+
+      - name: Test
+        run: dotnet test -c Release --no-build
+
+      - name: Pack
+        run: |
+          dotnet pack src/TestingBot.Api/TestingBot.Api.csproj -c Release --no-build -p:Version=${{ steps.version.outputs.value }} -o ./artifacts
+          dotnet pack src/TestingBot.Api.DependencyInjection/TestingBot.Api.DependencyInjection.csproj -c Release --no-build -p:Version=${{ steps.version.outputs.value }} -o ./artifacts
+
+      - name: Push to NuGet
+        run: dotnet nuget push "./artifacts/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: ./artifacts/*.*nupkg

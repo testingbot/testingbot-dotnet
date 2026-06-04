@@ -1,0 +1,51 @@
+<Project>
+
+  <!--
+    Shared MSBuild settings for every project in the repository.
+    Packaging metadata applies to packable projects only (tests/samples set IsPackable=false).
+  -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest-Recommended</AnalysisLevel>
+    <Deterministic>true</Deterministic>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- NuGet package metadata (shared). Individual packable projects set PackageId/Description. -->
+  <PropertyGroup>
+    <Authors>TestingBot</Authors>
+    <Company>TestingBot</Company>
+    <Product>TestingBot .NET SDK</Product>
+    <Copyright>Copyright © TestingBot</Copyright>
+    <PackageProjectUrl>https://github.com/testingbot/testingbot-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/testingbot/testingbot-dotnet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags>testingbot;selenium;appium;webdriver;testing;cross-browser;automation;ci;cypress</PackageTags>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Validates cross-target-framework API consistency at pack time; a baseline version is added
+         after the first release to also guard against cross-version breaking changes. -->
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <!-- Default version for local/dev builds. The release workflow overrides this from the git tag
+         (e.g. v1.2.3 -> 1.2.3) via -p:Version=. -->
+    <VersionPrefix>1.0.0</VersionPrefix>
+  </PropertyGroup>
+
+  <!-- SourceLink only runs in CI (needs a real git remote); keeps local builds quiet. -->
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' != 'true'">
+    <EnableSourceLink>false</EnableSourceLink>
+    <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
+    <DeterministicSourcePaths>false</DeterministicSourcePaths>
+  </PropertyGroup>
+
+</Project>
