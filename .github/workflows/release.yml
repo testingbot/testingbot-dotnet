@@ -50,7 +50,10 @@ jobs:
         id: login
         uses: NuGet/login@v1
         with:
-          user: testingbot
+          # nuget.org username that owns the Trusted Publishing policy (the policy
+          # creator), not the package owner org. The org "testingbot" owns the
+          # packages, but the policy is created under this personal account.
+          user: testingbot-jochen
 
       - name: Push to NuGet
         run: dotnet nuget push "./artifacts/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
