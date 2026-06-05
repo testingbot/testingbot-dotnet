@@ -1,19 +1,18 @@
 name: Release
 
 # Publishes both packages (and symbol packages) to NuGet when a GitHub Release is published.
-# Tag the release as v1.2.3; the version is derived from the tag.
 on:
   release:
     types: [published]
 
 permissions:
   contents: read
+  id-token: write # required for NuGet Trusted Publishing (OIDC)
 
 jobs:
   publish:
     name: Pack & publish
     runs-on: ubuntu-latest
-    environment: nuget
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,8 +46,14 @@ jobs:
           dotnet pack src/TestingBot.Api/TestingBot.Api.csproj -c Release --no-build -p:Version=${{ steps.version.outputs.value }} -o ./artifacts
           dotnet pack src/TestingBot.Api.DependencyInjection/TestingBot.Api.DependencyInjection.csproj -c Release --no-build -p:Version=${{ steps.version.outputs.value }} -o ./artifacts
 
+      - name: NuGet login (Trusted Publishing)
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: testingbot
+
       - name: Push to NuGet
-        run: dotnet nuget push "./artifacts/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push "./artifacts/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Upload packages
         uses: actions/upload-artifact@v4
