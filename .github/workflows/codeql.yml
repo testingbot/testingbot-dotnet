@@ -32,7 +32,7 @@ jobs:
           languages: csharp
 
       - name: Build
-        run: dotnet build -c Release src/TestingBot.Api/TestingBot.Api.csproj src/TestingBot.Api.DependencyInjection/TestingBot.Api.DependencyInjection.csproj
+        run: dotnet build TestingBot.Api.sln -c Release
 
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v3
