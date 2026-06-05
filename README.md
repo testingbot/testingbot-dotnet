@@ -180,9 +180,6 @@ Then inject `ITestingBotClient` anywhere. The client is registered as a singleto
 `CodelessSuites`, `Jobs`, `Team`, `User`, `Configuration`, plus `GetSharingAuthHash` for building
 public share URLs.
 
-See [`docs/future-surface.md`](docs/future-surface.md) for endpoints under consideration for future
-releases (app-automate framework runners, manual sessions).
-
 ## Contributing & development
 
 ```bash
