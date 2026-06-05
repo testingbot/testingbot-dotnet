@@ -9,6 +9,10 @@ updates:
       microsoft-extensions:
         patterns:
           - "Microsoft.Extensions.*"
+    ignore:
+      # FluentAssertions 8.x switched to a paid commercial license; stay on 7.x (Apache-2.0)
+      - dependency-name: "FluentAssertions"
+        versions: [">=8.0.0"]
 
   - package-ecosystem: github-actions
     directory: "/"
