@@ -33,6 +33,12 @@ public sealed record ManualTestCreate
     /// <summary>The test name (required).</summary>
     public required string Name { get; init; }
 
+    /// <summary>
+    /// The <c>browser_id</c> of the browser/device the test ran on (from <c>client.Browsers</c>).
+    /// The API rejects the request without it ("test[test_environment_id] is missing").
+    /// </summary>
+    public int? TestEnvironmentId { get; init; }
+
     /// <summary>Whether the test passed.</summary>
     public bool? Success { get; init; }
 

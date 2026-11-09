@@ -68,6 +68,20 @@ await client.Tests.UpdateAsync(test.SessionId!, new TestUpdate
 });
 ```
 
+### Recording an external result
+
+`POST /v1/tests` needs the `BrowserId` of the browser/device the test ran on:
+
+```csharp
+var browsers = await client.Browsers.ListAsync();
+await client.Tests.CreateAsync(new ManualTestCreate
+{
+    Name = "external result",
+    TestEnvironmentId = browsers[0].BrowserId,
+    Success = true,
+});
+```
+
 ## Pagination
 
 List endpoints return a `TestingBotPage<T>` (the items plus `meta`), or you can stream every item

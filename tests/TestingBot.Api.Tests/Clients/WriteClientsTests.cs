@@ -32,6 +32,27 @@ public class WriteClientsTests
     }
 
     [Fact]
+    public async Task Tests_Create_sends_test_environment_id()
+    {
+        var (connection, mock) = TestConnectionFactory.Create();
+        mock.Expect(HttpMethod.Post, BaseUrl + "tests")
+            .WithFormData("test[name]", "external result")
+            .WithFormData("test[test_environment_id]", "32166")
+            .WithFormData("test[success]", "1")
+            .Respond("application/json", "{\"success\":true}");
+
+        var ok = await new TestsClient(connection).CreateAsync(new ManualTestCreate
+        {
+            Name = "external result",
+            TestEnvironmentId = 32166,
+            Success = true,
+        });
+
+        ok.Should().BeTrue();
+        mock.VerifyNoOutstandingExpectation();
+    }
+
+    [Fact]
     public async Task Tests_Stop_and_Delete()
     {
         var (connection, mock) = TestConnectionFactory.Create();

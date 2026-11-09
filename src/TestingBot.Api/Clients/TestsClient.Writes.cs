@@ -71,6 +71,7 @@ internal sealed partial class TestsClient
         ArgumentNullException.ThrowIfNull(test);
         var form = new FormContentBuilder()
             .Add("test", "name", test.Name)
+            .Add("test", "test_environment_id", test.TestEnvironmentId)
             .Add("test", "success", test.Success)
             .Add("test", "status_message", test.StatusMessage)
             .Add("test", "extra", test.Extra)
